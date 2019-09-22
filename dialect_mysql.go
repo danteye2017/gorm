@@ -178,7 +178,7 @@ func (s mysql) HasTable(tableName string) bool {
 
 func (s mysql) HasIndex(tableName string, indexName string) bool {
 	currentDatabase, tableName := currentDatabaseAndTable(&s, tableName)
-	if rows, err := s.db.Query(fmt.Sprintf("SHOW INDEXES FROM `%s` FROM `%s` WHERE Key_name = ?", tableName, currentDatabase), indexName); err != nil {
+	if rows, err := s.db.Query(fmt.Sprintf("SHOW INDEXES FROM `%s` FROM `%s` WHERE Key_name = '%s'", tableName, currentDatabase, indexName)); err != nil {
 		panic(err)
 	} else {
 		defer rows.Close()
@@ -188,7 +188,7 @@ func (s mysql) HasIndex(tableName string, indexName string) bool {
 
 func (s mysql) HasColumn(tableName string, columnName string) bool {
 	currentDatabase, tableName := currentDatabaseAndTable(&s, tableName)
-	if rows, err := s.db.Query(fmt.Sprintf("SHOW COLUMNS FROM `%s` FROM `%s` WHERE Field = ?", tableName, currentDatabase), columnName); err != nil {
+	if rows, err := s.db.Query(fmt.Sprintf("SHOW COLUMNS FROM `%s` FROM `%s` WHERE Field = '%s'", tableName, currentDatabase, columnName)); err != nil {
 		panic(err)
 	} else {
 		defer rows.Close()
